@@ -48,7 +48,22 @@ RUN wget http://mirror.fibergrid.in/apache/maven/maven-3/3.3.9/binaries/apache-m
     rm -f apache-maven-3.3.9-bin.tar.gz && \
     ln -s /usr/local/apache-maven-3.3.9/bin/mvn /usr/bin/mvn
 	
+ENV SONAR_RUNNER_VERSION 2.4
+ENV SONAR_RUNNER_HOME /opt/sonar-runner-${SONAR_RUNNER_VERSION}
+ENV SONAR_RUNNER_PACKAGE sonar-runner-dist-${SONAR_RUNNER_VERSION}.zip
+ENV HOME ${SONAR_RUNNER_HOME}
 
+
+
+RUN yum -y install unzip
+
+
+WORKDIR /opt
+
+RUN wget http://repo1.maven.org/maven2/org/codehaus/sonar/runner/sonar-runner-dist/${SONAR_RUNNER_VERSION}/${SONAR_RUNNER_PACKAGE} && \
+    unzip  sonar-runner-dist-2.4.zip && \
+ rm ${SONAR_RUNNER_PACKAGE}
+	
 # Make Jenkins a slave by installing swarm-client
 RUN curl -s -o /bin/swarm-client.jar -k https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/2.2/swarm-client-2.2-jar-with-dependencies.jar
 
